@@ -1,4 +1,4 @@
-﻿namespace Factory.GameFactory.Interfaces
+﻿namespace Infrastructure.Factory.GameFactory.Interfaces
 {
     public interface IGameFactory
     {

@@ -1,8 +1,8 @@
 ﻿using System;
-using Factory.GameFactory.Interfaces;
+using Infrastructure.Factory.GameFactory.Interfaces;
 using Zenject;
 
-namespace Factory.GameFactory
+namespace Infrastructure.Factory.GameFactory
 {
     public class GameFactory : IGameFactory
     {
@@ -15,6 +15,11 @@ namespace Factory.GameFactory
         public void CreateCube(int x, int y, int type)
         {
             throw new NotImplementedException();
+        }
+
+        public void CreateBall(int index)
+        {
+            
         }
     }
 }
