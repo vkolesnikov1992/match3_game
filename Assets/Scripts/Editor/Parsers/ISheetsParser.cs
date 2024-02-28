@@ -2,6 +2,6 @@
 {
     public interface ISheetsParser : IParser
     {
-        void ParseData(string sheetId, string sheetName);
+        new void ParseData(string generalName, string id, string name);
     }
 }

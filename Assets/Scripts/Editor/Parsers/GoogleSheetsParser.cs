@@ -6,9 +6,9 @@ namespace Editor.Parsers
 {
     public class GoogleSheetsParser : IParser
     {
-        private readonly string _storagePath = Application.dataPath + "/Resources/";
+        private readonly string _storagePath = Application.dataPath + "/Resources/Settings";
 
-        public async void ParseData(string sheetId, string sheetName)
+        public async void ParseData(string id, string name)
         {
             HttpClient client = new HttpClient();
             HttpResponseMessage response = null;
@@ -16,7 +16,7 @@ namespace Editor.Parsers
 
             try
             {
-                apiRequest = $"https://opensheet.elk.sh/{sheetId}/{sheetName}";
+                apiRequest = $"https://opensheet.elk.sh/{id}/{name}";
 
                 response = await client.GetAsync(apiRequest);
             }
@@ -31,8 +31,14 @@ namespace Editor.Parsers
                 return;
             }
 
-
-            await File.WriteAllTextAsync($"{_storagePath}{sheetName}.json",
+            string directoryPath = Path.Combine(_storagePath, name);
+            
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+            
+            await File.WriteAllTextAsync($"{_storagePath}/{name}/{name}.json",
                 response.Content.ReadAsStringAsync().Result);
             Debug.Log("Configs updated!");
         }
