@@ -18,15 +18,16 @@ namespace Infrastructure.MonoBehaviour.View.Core
         private int _animationSpeed;
 
         [Inject]
-        public void Construct()
+        public void Construct(int animationSpeed)
         {
-            throw new NotImplementedException();
-            _animationSpeed = 0;
+            _animationSpeed = animationSpeed;
         }
 
-        private void ctor(Sprite[] idleAnimation, Sprite[] destroyAnimation)
+        public void Initialize(Sprite[] idleAnimation, Sprite[] destroyAnimation)
         {
-            throw new NotImplementedException();
+            _idleAnimation = idleAnimation;
+            _destroyAnimation = destroyAnimation;
+            
             _cancellationTokenSource = new CancellationTokenSource();
             PlayIdleAnimation(_cancellationTokenSource.Token).Forget();
         }
