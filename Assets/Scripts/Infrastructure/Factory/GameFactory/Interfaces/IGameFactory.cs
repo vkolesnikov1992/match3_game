@@ -1,7 +1,10 @@
-﻿namespace Infrastructure.Factory.GameFactory.Interfaces
+﻿using Infrastructure.MonoBehaviour.View.Core;
+
+namespace Infrastructure.Factory.GameFactory.Interfaces
 {
     public interface IGameFactory
     {
-        void CreateCube(int x, int y, int type);
+        CubeView CreateCube(int x, int y, int type);
+        
     }
 }
