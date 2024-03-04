@@ -1,9 +1,11 @@
-﻿namespace Infrastructure.Services.Json.Interfaces
+﻿using Cysharp.Threading.Tasks;
+
+namespace Infrastructure.Services.Json.Interfaces
 {
     public interface ISerializer
     {
-        void Serialize();
+        string Serialize(object obj);
         
-        void Deserialize();
+        UniTask<T> Deserialize<T>(string id, bool isSingleObject);
     }
 }
