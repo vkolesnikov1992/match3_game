@@ -1,0 +1,106 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 2_destroy
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 100
+      m_CrunchedCompression: 1
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: 54fa37f157d807b4b8f82d7674120093, type: 3}
+    - {fileID: 2800000, guid: 468bd9b5d5ebdbc4b9fef69af16ff48f, type: 3}
+    - {fileID: 2800000, guid: ad95878a2f95ade44b8e1d5d50558f99, type: 3}
+    - {fileID: 2800000, guid: b37c2f1c105dc5a4a9cff1d0f252c201, type: 3}
+    - {fileID: 2800000, guid: 9aa45b47a7adadc4cb980e9fce5615b4, type: 3}
+    - {fileID: 2800000, guid: a2b58c968442fd241acd11e768620874, type: 3}
+    - {fileID: 2800000, guid: 520c5826c74c5954bb4299ef065be911, type: 3}
+    - {fileID: 2800000, guid: 5b950888325915042833a31aa87444bd, type: 3}
+    - {fileID: 2800000, guid: c5e5f8e6f5aa30a4a9434eeadbf9471f, type: 3}
+    - {fileID: 2800000, guid: 2232f09ad13bab64484a82b35d64f78b, type: 3}
+    - {fileID: 2800000, guid: 419cc902609354544898827e82d420b8, type: 3}
+    - {fileID: 2800000, guid: 1629afb34be2e094e8181ab69224de54, type: 3}
+    - {fileID: 2800000, guid: 8c004ed30f0002f4e8683eefbb980117, type: 3}
+    - {fileID: 2800000, guid: 8690d5f1aeb2ceb43b2b0f24aa419572, type: 3}
+    - {fileID: 2800000, guid: 12f143074cd8df44b8590f73abf88670, type: 3}
+    - {fileID: 2800000, guid: 861a2b93b3617ad4fb49dca5194d8d48, type: 3}
+    - {fileID: 2800000, guid: c5f551e0ce80dce49aeebd2d936a99b9, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: c5f551e0ce80dce49aeebd2d936a99b9, type: 3}
+  - {fileID: 21300000, guid: 8690d5f1aeb2ceb43b2b0f24aa419572, type: 3}
+  - {fileID: 21300000, guid: 54fa37f157d807b4b8f82d7674120093, type: 3}
+  - {fileID: 21300000, guid: 419cc902609354544898827e82d420b8, type: 3}
+  - {fileID: 21300000, guid: 861a2b93b3617ad4fb49dca5194d8d48, type: 3}
+  - {fileID: 21300000, guid: 1629afb34be2e094e8181ab69224de54, type: 3}
+  - {fileID: 21300000, guid: 8c004ed30f0002f4e8683eefbb980117, type: 3}
+  - {fileID: 21300000, guid: 468bd9b5d5ebdbc4b9fef69af16ff48f, type: 3}
+  - {fileID: 21300000, guid: 520c5826c74c5954bb4299ef065be911, type: 3}
+  - {fileID: 21300000, guid: a2b58c968442fd241acd11e768620874, type: 3}
+  - {fileID: 21300000, guid: c5e5f8e6f5aa30a4a9434eeadbf9471f, type: 3}
+  - {fileID: 21300000, guid: 12f143074cd8df44b8590f73abf88670, type: 3}
+  - {fileID: 21300000, guid: 9aa45b47a7adadc4cb980e9fce5615b4, type: 3}
+  - {fileID: 21300000, guid: 5b950888325915042833a31aa87444bd, type: 3}
+  - {fileID: 21300000, guid: ad95878a2f95ade44b8e1d5d50558f99, type: 3}
+  - {fileID: 21300000, guid: 2232f09ad13bab64484a82b35d64f78b, type: 3}
+  - {fileID: 21300000, guid: b37c2f1c105dc5a4a9cff1d0f252c201, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - anim_fire_destroy_16
+  - anim_fire_destroy_13
+  - anim_fire_destroy_0
+  - anim_fire_destroy_10
+  - anim_fire_destroy_15
+  - anim_fire_destroy_11
+  - anim_fire_destroy_12
+  - anim_fire_destroy_1
+  - anim_fire_destroy_6
+  - anim_fire_destroy_5
+  - anim_fire_destroy_8
+  - anim_fire_destroy_14
+  - anim_fire_destroy_4
+  - anim_fire_destroy_7
+  - anim_fire_destroy_2
+  - anim_fire_destroy_9
+  - anim_fire_destroy_3
+  m_RenderDataMap: {}
+  m_Tag: 2_destroy
+  m_IsVariant: 0

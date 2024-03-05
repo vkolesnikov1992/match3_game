@@ -1,0 +1,106 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 1_idle
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 100
+      m_CrunchedCompression: 1
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: 0f25d411abc6168499709db96628f4f8, type: 3}
+    - {fileID: 2800000, guid: b8d347e7356f829448bb1d0674c920f5, type: 3}
+    - {fileID: 2800000, guid: 2c7ae842f504d9142826a548ff048b0d, type: 3}
+    - {fileID: 2800000, guid: 2564d99ae2249ec47aa23a2598f6833c, type: 3}
+    - {fileID: 2800000, guid: 48e6d7c8b5e8b6c49af40947a79094a2, type: 3}
+    - {fileID: 2800000, guid: 993c500ee3446cf4db19c2b2907d1cd9, type: 3}
+    - {fileID: 2800000, guid: b113d4f7261630d44bf0eae67df5fdc8, type: 3}
+    - {fileID: 2800000, guid: 7d53a39b81a92ff4ba21be9e36c6918a, type: 3}
+    - {fileID: 2800000, guid: e55f90097aa659d499ad5519d565922f, type: 3}
+    - {fileID: 2800000, guid: 5e4bfd39faa75e34696e44ebd94966b6, type: 3}
+    - {fileID: 2800000, guid: 3893743237814e143aa667c435205b01, type: 3}
+    - {fileID: 2800000, guid: b3a60c1293736d1429e7cfa8a0a56530, type: 3}
+    - {fileID: 2800000, guid: 5e8f2fe0b3676614c80d9fab6b49e82f, type: 3}
+    - {fileID: 2800000, guid: 069278df0df0ef34f889fc24f11b8776, type: 3}
+    - {fileID: 2800000, guid: 07c21a6a0d126444fabad29bcca998c8, type: 3}
+    - {fileID: 2800000, guid: 2fec472ea9506ef429c7a406e6af496b, type: 3}
+    - {fileID: 2800000, guid: 3e0d9d7c219a2954bac752bc304ccedc, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 5e8f2fe0b3676614c80d9fab6b49e82f, type: 3}
+  - {fileID: 21300000, guid: 0f25d411abc6168499709db96628f4f8, type: 3}
+  - {fileID: 21300000, guid: b3a60c1293736d1429e7cfa8a0a56530, type: 3}
+  - {fileID: 21300000, guid: 3893743237814e143aa667c435205b01, type: 3}
+  - {fileID: 21300000, guid: 2c7ae842f504d9142826a548ff048b0d, type: 3}
+  - {fileID: 21300000, guid: b8d347e7356f829448bb1d0674c920f5, type: 3}
+  - {fileID: 21300000, guid: b113d4f7261630d44bf0eae67df5fdc8, type: 3}
+  - {fileID: 21300000, guid: 48e6d7c8b5e8b6c49af40947a79094a2, type: 3}
+  - {fileID: 21300000, guid: e55f90097aa659d499ad5519d565922f, type: 3}
+  - {fileID: 21300000, guid: 5e4bfd39faa75e34696e44ebd94966b6, type: 3}
+  - {fileID: 21300000, guid: 07c21a6a0d126444fabad29bcca998c8, type: 3}
+  - {fileID: 21300000, guid: 2564d99ae2249ec47aa23a2598f6833c, type: 3}
+  - {fileID: 21300000, guid: 7d53a39b81a92ff4ba21be9e36c6918a, type: 3}
+  - {fileID: 21300000, guid: 3e0d9d7c219a2954bac752bc304ccedc, type: 3}
+  - {fileID: 21300000, guid: 993c500ee3446cf4db19c2b2907d1cd9, type: 3}
+  - {fileID: 21300000, guid: 2fec472ea9506ef429c7a406e6af496b, type: 3}
+  - {fileID: 21300000, guid: 069278df0df0ef34f889fc24f11b8776, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - anim_water_idle_12
+  - anim_water_idle_0
+  - anim_water_idle_11
+  - anim_water_idle_10
+  - anim_water_idle_2
+  - anim_water_idle_1
+  - anim_water_idle_6
+  - anim_water_idle_4
+  - anim_water_idle_8
+  - anim_water_idle_9
+  - anim_water_idle_14
+  - anim_water_idle_3
+  - anim_water_idle_7
+  - anim_water_idle_16
+  - anim_water_idle_5
+  - anim_water_idle_15
+  - anim_water_idle_13
+  m_RenderDataMap: {}
+  m_Tag: 1_idle
+  m_IsVariant: 0
