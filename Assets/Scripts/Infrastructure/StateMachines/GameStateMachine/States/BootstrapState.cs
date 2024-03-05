@@ -4,18 +4,20 @@ namespace Infrastructure.StateMachines.GameStateMachine.States
 {
     public class BootstrapState : IState
     {
-        public BootstrapState()
+        private readonly GameStateMachine _gameStateMachine;
+
+        public BootstrapState(GameStateMachine gameStateMachine)
         {
-            throw new System.NotImplementedException();
+            _gameStateMachine = gameStateMachine;
         }
         public void Exit()
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public void Enter()
         {
-            throw new System.NotImplementedException();
+            _gameStateMachine.Enter<LoadProgressState>();
         }
     }
 }

@@ -15,9 +15,9 @@ namespace Infrastructure.StateMachines.GameStateMachine
         {
             _states = new Dictionary<Type, IExitableState>
             {
-                [typeof(BootstrapState)] = new BootstrapState(),
-                [typeof(LoadProgressState)] = new LoadProgressState(),
-                [typeof(GameLoopState)] = new GameLoopState(),
+                [typeof(BootstrapState)] = new BootstrapState(this),
+                [typeof(LoadProgressState)] = new LoadProgressState(this, container),
+                [typeof(GameLoopState)] = new GameLoopState(this, container),
             };
         }
 

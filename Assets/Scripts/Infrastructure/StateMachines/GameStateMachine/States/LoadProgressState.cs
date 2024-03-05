@@ -1,21 +1,26 @@
 ﻿using Infrastructure.StateMachines.GameStateMachine.States.Interfaces;
+using Zenject;
 
 namespace Infrastructure.StateMachines.GameStateMachine.States
 {
     public class LoadProgressState : IState
     {
-        public LoadProgressState()
+        private readonly GameStateMachine _gameStateMachine;
+        private readonly DiContainer _diContainer;
+
+        public LoadProgressState(GameStateMachine gameStateMachine, DiContainer diContainer)
         {
-            throw new System.NotImplementedException();
+            _gameStateMachine = gameStateMachine;
+            _diContainer = diContainer;
         }
         public void Exit()
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public void Enter()
         {
-            throw new System.NotImplementedException();
+            
         }
     }
 }

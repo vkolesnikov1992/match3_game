@@ -1,21 +1,26 @@
 ﻿using Infrastructure.StateMachines.GameStateMachine.States.Interfaces;
+using Zenject;
 
 namespace Infrastructure.StateMachines.GameStateMachine.States
 {
     public class GameLoopState : IState
     {
-        public GameLoopState()
+        private readonly GameStateMachine _gameStateMachine;
+        private readonly DiContainer _diContainer;
+
+        public GameLoopState(GameStateMachine gameStateMachine, DiContainer diContainer)
         {
-            throw new System.NotImplementedException();
+            _gameStateMachine = gameStateMachine;
+            _diContainer = diContainer;
         }
         public void Exit()
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public void Enter()
         {
-            throw new System.NotImplementedException();
+            
         }
     }
 }
