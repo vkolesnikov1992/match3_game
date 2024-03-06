@@ -12,4 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a30c0079ad8b40c3a174772dc5452f9e, type: 3}
   m_Name: ConfigDataPaths
   m_EditorClassIdentifier: 
-  ConfigsData: []
+  ConfigsData:
+  - Name: LevelsAndSettings
+    SheetId: 1B1AhAkfZluJcorIZh1skIPyfZ7cg30Axm7J9KE39lWg
+    SheetNames:
+    - Name: Levels_settings
+      isSingleObject: 0
+    - Name: Game_settings
+      isSingleObject: 1
