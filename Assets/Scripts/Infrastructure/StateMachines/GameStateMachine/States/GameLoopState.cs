@@ -1,21 +1,18 @@
 ﻿using Cysharp.Threading.Tasks;
 using Infrastructure.StateMachines.GameStateMachine.States.Interfaces;
 using UnityEngine.SceneManagement;
-using Zenject;
 
 namespace Infrastructure.StateMachines.GameStateMachine.States
 {
     public class GameLoopState : IState
     {
         private readonly GameStateMachine _gameStateMachine;
-        private readonly DiContainer _diContainer;
 
         private const string GameLoopSceneName = "GameLoop";
 
-        public GameLoopState(GameStateMachine gameStateMachine, DiContainer diContainer)
+        public GameLoopState(GameStateMachine gameStateMachine)
         {
             _gameStateMachine = gameStateMachine;
-            _diContainer = diContainer;
         }
         public void Exit()
         {

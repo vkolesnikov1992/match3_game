@@ -6,7 +6,7 @@ using Infrastructure.Services.Json;
 using Infrastructure.Services.Json.Interfaces;
 using Zenject;
 
-namespace Infrastructure.MonoInstallers
+namespace Infrastructure.MonoInstallers.ProjectContexts
 {
     public class GlobalContext : MonoInstaller
     {

@@ -1,7 +1,4 @@
-﻿using Infrastructure.MonoBehaviour.InputService;
-using Infrastructure.Services.InputService.Interfaces;
-using UnityEngine;
-using Zenject;
+﻿using Zenject;
 
 namespace Infrastructure.MonoInstallers.SceneContexts
 {
