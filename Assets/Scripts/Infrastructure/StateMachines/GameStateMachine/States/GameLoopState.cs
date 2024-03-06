@@ -1,4 +1,6 @@
-﻿using Infrastructure.StateMachines.GameStateMachine.States.Interfaces;
+﻿using Cysharp.Threading.Tasks;
+using Infrastructure.StateMachines.GameStateMachine.States.Interfaces;
+using UnityEngine.SceneManagement;
 using Zenject;
 
 namespace Infrastructure.StateMachines.GameStateMachine.States
@@ -7,6 +9,8 @@ namespace Infrastructure.StateMachines.GameStateMachine.States
     {
         private readonly GameStateMachine _gameStateMachine;
         private readonly DiContainer _diContainer;
+
+        private const string GameLoopSceneName = "GameLoop";
 
         public GameLoopState(GameStateMachine gameStateMachine, DiContainer diContainer)
         {
@@ -18,9 +22,15 @@ namespace Infrastructure.StateMachines.GameStateMachine.States
             
         }
 
-        public void Enter()
+        public async void Enter()
         {
-            
+            await LoadGameLoopScene();
+        }
+        
+        private async UniTask LoadGameLoopScene()
+        {
+            await SceneManager.LoadSceneAsync(GameLoopSceneName, LoadSceneMode.Single);
+
         }
     }
 }

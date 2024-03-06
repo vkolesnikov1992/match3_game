@@ -20,7 +20,7 @@ namespace Infrastructure.StateMachines.GameStateMachine.States
 
         public void Enter()
         {
-            
+            _gameStateMachine.Enter<GameLoopState>();
         }
     }
 }
