@@ -1,5 +1,5 @@
-﻿using Infrastructure.Data.Resources.Settings;
-using Infrastructure.Data.Settings;
+﻿using Infrastructure.Data.ConfigsData;
+using Infrastructure.Data.Resources.Settings;
 using UnityEditor;
 using UnityEngine;
 

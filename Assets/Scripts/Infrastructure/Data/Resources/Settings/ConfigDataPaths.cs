@@ -1,4 +1,4 @@
-﻿using Infrastructure.Data.Settings;
+﻿using Infrastructure.Data.ConfigsData;
 using UnityEngine;
 
 namespace Infrastructure.Data.Resources.Settings
