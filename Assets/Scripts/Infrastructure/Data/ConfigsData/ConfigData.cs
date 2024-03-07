@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Infrastructure.Data.Settings
+namespace Infrastructure.Data.ConfigsData
 {
     [Serializable]
     public struct ConfigData

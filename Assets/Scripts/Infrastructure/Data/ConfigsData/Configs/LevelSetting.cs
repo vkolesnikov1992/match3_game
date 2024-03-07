@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace Infrastructure.Data.Settings.GameData
+namespace Infrastructure.Data.ConfigsData.Configs
 {
     [Serializable]
     public struct LevelSetting
