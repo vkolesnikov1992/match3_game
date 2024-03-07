@@ -1,23 +1,16 @@
-﻿using Infrastructure.Services.InputService.Interfaces;
+﻿using System;
+using Infrastructure.Services.InputService.Interfaces;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Zenject;
 
 namespace Infrastructure.MonoBehaviour.InputService
 {
-    public class PointerHandlerInput : UnityEngine.MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+    public class PointerHandlerInput : UnityEngine.MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IInputService
     {
         private Vector2Int _pressPosition;
         private Vector2Int _releasePosition;
-
-        private IInputService _inputService;
-
-        [Inject]
-        public void Construct(IInputService inputService)
-        {
-            _inputService = inputService;
-        }
-
+        public event Action<Vector2Int, Vector2Int> OnSwipeDetected;
+        
         public void OnPointerDown(PointerEventData eventData)
         {
             _pressPosition = Vector2Int.RoundToInt(eventData.pointerCurrentRaycast.worldPosition);
@@ -27,12 +20,25 @@ namespace Infrastructure.MonoBehaviour.InputService
         {
             _releasePosition = Vector2Int.RoundToInt(eventData.pointerCurrentRaycast.worldPosition);
             
-            ProcessInput();
+            DetectSwipe();
         }
         
-        private void ProcessInput()
+        private void DetectSwipe()
         {
-            _inputService.ProcessInput(_pressPosition, _releasePosition);
+            Vector2Int swipeVector = _releasePosition - _pressPosition;
+
+            if (swipeVector.magnitude == 0)
+            {
+                return;
+            }
+            
+            bool isHorizontalSwipe = Mathf.Abs(swipeVector.x) > Mathf.Abs(swipeVector.y);
+
+            Vector2Int swipeDirection = isHorizontalSwipe ?
+                (swipeVector.x > 0 ? Vector2Int.right : Vector2Int.left) :
+                (swipeVector.y > 0 ? Vector2Int.up : Vector2Int.down);
+
+            OnSwipeDetected?.Invoke(_pressPosition, swipeDirection);
         }
     }
 }
