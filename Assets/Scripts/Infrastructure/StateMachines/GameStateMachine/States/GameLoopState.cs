@@ -27,7 +27,6 @@ namespace Infrastructure.StateMachines.GameStateMachine.States
         private async UniTask LoadGameLoopScene()
         {
             await SceneManager.LoadSceneAsync(GameLoopSceneName, LoadSceneMode.Single);
-
         }
     }
 }
