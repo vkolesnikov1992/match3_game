@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using Infrastructure.Factory.GameFactory.Interfaces;
 using Infrastructure.MonoBehaviour.View.Core;
@@ -20,6 +21,7 @@ namespace Infrastructure.Systems.Core
         private readonly IDataProvider _dataProvider;
         private readonly ICameraService _cameraService;
 
+        private CancellationTokenSource _cancellationToken;
         public event Action<int> DestroyedCubeCount;
         private int _destroyedCubeCount;
 
@@ -33,15 +35,21 @@ namespace Infrastructure.Systems.Core
         
         public void Initialize()
         {
+            _cancellationToken = new CancellationTokenSource();
             _inputService.OnSwipeDetected += (startPosition, moveDirection) =>
             {
-                UniTask.RunOnThreadPool(async () => { await SwapCells(startPosition, moveDirection); });
+                UniTask.RunOnThreadPool(async () =>
+                {
+                    await SwapCells(startPosition, moveDirection);
+                }, cancellationToken: _cancellationToken.Token);
             };
         }
 
         public void CreateLevel(int[,] level)
         {
             _destroyedCubeCount = 0;
+            
+            _cancellationToken = new CancellationTokenSource();
             
             int numRows = level.GetLength(0);
             int numColumns = level.GetLength(1);
@@ -94,7 +102,7 @@ namespace Infrastructure.Systems.Core
             UniTask firstTask = firstCell.Cube.ReplaceCell(secondCell);
             UniTask secondTask = secondCell.Cube.ReplaceCell(firstCell);
 
-            await UniTask.WhenAll(firstTask, secondTask);
+            await UniTask.WhenAll(firstTask, secondTask).AttachExternalCancellation(_cancellationToken.Token);
             
             await DropBlocks();
             await GridNormalize();
@@ -303,7 +311,7 @@ namespace Infrastructure.Systems.Core
                 }
             }
 
-            await UniTask.WhenAll(animationTasks);
+            await UniTask.WhenAll(animationTasks).AttachExternalCancellation(_cancellationToken.Token);
 
             DestroyedCubeCount?.Invoke(_destroyedCubeCount);
         }
@@ -345,7 +353,7 @@ namespace Infrastructure.Systems.Core
                 }
             }
 
-            await UniTask.WhenAll(animationTasks);
+            await UniTask.WhenAll(animationTasks).AttachExternalCancellation(_cancellationToken.Token);
         }
 
         private int GetLowestEmptyCellIndexNew(int x, int startY)
@@ -374,6 +382,28 @@ namespace Infrastructure.Systems.Core
             }
 
             return lowestEmptyCellIndex;
+        }
+
+
+        public void ClearLevel()
+        {
+            _cancellationToken.Cancel();
+            
+            int numRows = _cellsGrid.GetLength(0);
+            int numColumns = _cellsGrid.GetLength(1);
+
+            for (int y = 0; y < numColumns; y++)
+            {
+                for (int x = 0; x < numRows; x++)
+                {
+                    Cell cell = _cellsGrid[x, y];
+
+                    if (cell.Cube.IsHasView)
+                    {
+                        cell.Cube.CubeView.Destroy();
+                    }
+                }
+            }
         }
 
         private void PrintCellsGrid()
