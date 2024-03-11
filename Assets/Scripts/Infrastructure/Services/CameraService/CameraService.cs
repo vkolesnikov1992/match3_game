@@ -49,8 +49,16 @@ namespace Infrastructure.Services.CameraService
         {
             Bounds gridBounds = CalculateGridBounds(grid);
 
-            Vector3 cameraTargetPosition = gridBounds.center;
-            _mainCamera.transform.position = new Vector3(cameraTargetPosition.x, cameraTargetPosition.y + 1f, _mainCamera.transform.position.z);
+            int cameraSize = grid.GetLength(0) + 1;
+
+            _mainCamera.orthographicSize = cameraSize;
+
+            float cameraHeight = 2f * _mainCamera.orthographicSize;
+            float pivotOffset = 0.2f * cameraHeight; 
+            
+            Vector3 pivotPoint = new Vector3(gridBounds.center.x, gridBounds.min.y + cameraHeight / 2f - pivotOffset, _mainCamera.transform.position.z);
+
+            _mainCamera.transform.position = pivotPoint;
         }
 
         private Bounds CalculateGridBounds(Cell[,] grid)
