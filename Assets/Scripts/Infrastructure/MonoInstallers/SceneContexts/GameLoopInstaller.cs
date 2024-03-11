@@ -1,4 +1,5 @@
-﻿using Infrastructure.Services.CameraService;
+﻿using Infrastructure.MonoBehaviour.UI;
+using Infrastructure.Services.CameraService;
 using Infrastructure.Services.InputService.Interfaces;
 using Infrastructure.Systems.Core;
 using Zenject;
@@ -9,14 +10,15 @@ namespace Infrastructure.MonoInstallers.SceneContexts
     {
         public override void InstallBindings()
         {
-            RegisterInput();
+            Register();
             RegisterGameSystems();
         }
 
-        private void RegisterInput()
+        private void Register()
         {
             Container.Bind<IInputService>().FromComponentInHierarchy().AsSingle();
             Container.BindInterfacesTo<CameraService>().AsSingle();
+            Container.Bind<GameLoopCanvas>().FromComponentInHierarchy().AsSingle();
         }
 
         private void RegisterGameSystems()
