@@ -1,4 +1,5 @@
-﻿using Infrastructure.Services.DataProvider.Interfaces;
+﻿using Infrastructure.MonoBehaviour.UI;
+using Infrastructure.Services.DataProvider.Interfaces;
 using Infrastructure.Services.SaveLoadService.Interfaces;
 using Zenject;
 
@@ -9,14 +10,17 @@ namespace Infrastructure.Systems.Core
         private readonly Match3System _match3System;
         private readonly IDataProvider _dataProvider;
         private readonly ISaveLoadService _saveLoadService;
+        private readonly GameLoopCanvas _gameLoopCanvas;
 
         private int _cubeCountTarget;
 
-        public GameplaySystem(Match3System match3System, IDataProvider dataProvider, ISaveLoadService saveLoadService)
+        public GameplaySystem(Match3System match3System, IDataProvider dataProvider, 
+            ISaveLoadService saveLoadService, GameLoopCanvas gameLoopCanvas)
         {
             _match3System = match3System;
             _dataProvider = dataProvider;
             _saveLoadService = saveLoadService;
+            _gameLoopCanvas = gameLoopCanvas;
         }
 
         public void Initialize()
@@ -24,6 +28,9 @@ namespace Infrastructure.Systems.Core
             CreateLevel(GetCurrentLevel());
             
             _match3System.DestroyedCubeCount += CheckLevel;
+            
+            _gameLoopCanvas.OnReplayClicked += LevelReload;
+            _gameLoopCanvas.OnNextLevelClicked += NextLevel;
         }
 
         private void CreateLevel(int[,] level)
@@ -36,14 +43,7 @@ namespace Infrastructure.Systems.Core
         {
             if (destroyedCubeCount == _cubeCountTarget)
             {
-                int levelIndex = _dataProvider.PlayerDataContainer.PlayerProgress.LevelIndex;
-                int levelsCount = _dataProvider.ConfigsDataContainer.LevelSettings.Length;
-
-                int newLevelIndex = (levelIndex + 1) % levelsCount;
-
-                _dataProvider.PlayerDataContainer.PlayerProgress.LevelIndex = newLevelIndex;
-
-                int[,] level = _dataProvider.ConfigsDataContainer.LevelSettings[newLevelIndex].GetLevelsArray();
+                int[,] level = GetNextLevel();
                 
                 CreateLevel(level);
                 
@@ -78,6 +78,32 @@ namespace Infrastructure.Systems.Core
 
             int levelIndex = _dataProvider.PlayerDataContainer.PlayerProgress.LevelIndex;
             return _dataProvider.ConfigsDataContainer.LevelSettings[levelIndex].GetLevelsArray();
+        }
+
+        private int[,] GetNextLevel()
+        {
+            int levelIndex = _dataProvider.PlayerDataContainer.PlayerProgress.LevelIndex;
+            int levelsCount = _dataProvider.ConfigsDataContainer.LevelSettings.Length;
+
+            int newLevelIndex = (levelIndex + 1) % levelsCount;
+
+            _dataProvider.PlayerDataContainer.PlayerProgress.LevelIndex = newLevelIndex;
+
+            int[,] level = _dataProvider.ConfigsDataContainer.LevelSettings[newLevelIndex].GetLevelsArray();
+
+            return level;
+        }
+
+        private void LevelReload()
+        {
+            _match3System.ClearLevel();
+            CreateLevel(GetCurrentLevel());
+        }
+
+        private void NextLevel()
+        {
+            _match3System.ClearLevel();
+            CreateLevel(GetNextLevel());
         }
     }
 }
