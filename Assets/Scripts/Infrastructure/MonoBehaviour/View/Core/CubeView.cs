@@ -1,8 +1,7 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using Zenject;
+
 using Random = UnityEngine.Random;
 
 namespace Infrastructure.MonoBehaviour.View.Core
@@ -15,20 +14,17 @@ namespace Infrastructure.MonoBehaviour.View.Core
         private Sprite[] _destroyAnimation;
         private CancellationTokenSource _cancellationTokenSource;
 
-        private int _animationSpeed;
+        private int _animationSpeed = 100;
 
-        [Inject]
-        public void Construct(int animationSpeed)
-        {
-            _animationSpeed = animationSpeed;
-        }
-
-        public void Initialize(Sprite[] idleAnimation, Sprite[] destroyAnimation)
+        public void Initialize(Sprite[] idleAnimation, Sprite[] destroyAnimation, int animationSpeed)
         {
             _idleAnimation = idleAnimation;
             _destroyAnimation = destroyAnimation;
             
             _cancellationTokenSource = new CancellationTokenSource();
+
+            _animationSpeed = animationSpeed;
+            
             PlayIdleAnimation(_cancellationTokenSource.Token).Forget();
         }
         
