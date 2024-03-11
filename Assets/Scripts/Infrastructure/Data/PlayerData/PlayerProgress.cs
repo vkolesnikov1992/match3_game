@@ -1,4 +1,5 @@
 ﻿using System;
+using Infrastructure.Data.ConfigsData.Configs;
 
 namespace Infrastructure.Data.PlayerData
 {
@@ -6,6 +7,6 @@ namespace Infrastructure.Data.PlayerData
     public class PlayerProgress
     {
         public int LevelIndex;
-        public string Level;
+        public LevelSetting CurrentLevel;
     }
 }
