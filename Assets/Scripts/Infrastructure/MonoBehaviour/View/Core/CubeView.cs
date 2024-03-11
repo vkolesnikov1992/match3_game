@@ -12,7 +12,8 @@ namespace Infrastructure.MonoBehaviour.View.Core
 
         private Sprite[] _idleAnimation;
         private Sprite[] _destroyAnimation;
-        private CancellationTokenSource _cancellationTokenSource;
+        private CancellationTokenSource _idleCancellationTokenSource;
+        private CancellationTokenSource _destroyCancellationTokenSource;
 
         private int _animationSpeed = 100;
 
@@ -21,11 +22,12 @@ namespace Infrastructure.MonoBehaviour.View.Core
             _idleAnimation = idleAnimation;
             _destroyAnimation = destroyAnimation;
             
-            _cancellationTokenSource = new CancellationTokenSource();
+            _idleCancellationTokenSource = new CancellationTokenSource();
+            _destroyCancellationTokenSource = new CancellationTokenSource();
 
             _animationSpeed = animationSpeed;
             
-            PlayIdleAnimation(_cancellationTokenSource.Token).Forget();
+            PlayIdleAnimation(_idleCancellationTokenSource.Token).Forget();
         }
         
         private async UniTask PlayIdleAnimation(CancellationToken cancellationToken)
@@ -41,14 +43,21 @@ namespace Infrastructure.MonoBehaviour.View.Core
 
         public async UniTask PlayDestroyAnimation()
         {
-            _cancellationTokenSource.Cancel();
+            _idleCancellationTokenSource.Cancel();
 
             foreach (Sprite sprite in _destroyAnimation)
             {
                 _spriteRenderer.sprite = sprite;
-                await UniTask.Delay(_animationSpeed);
+                await UniTask.Delay(_animationSpeed, cancellationToken: _destroyCancellationTokenSource.Token);
             }
 
+            Destroy(gameObject);
+        }
+
+        public void Destroy()
+        {
+            _idleCancellationTokenSource.Cancel();
+            _destroyCancellationTokenSource.Cancel();
             Destroy(gameObject);
         }
     }
