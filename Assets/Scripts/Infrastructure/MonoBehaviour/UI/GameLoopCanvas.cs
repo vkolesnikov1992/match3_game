@@ -1,7 +1,7 @@
 ﻿using System;
+using Infrastructure.Systems.Core;
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
 
 namespace Infrastructure.MonoBehaviour.UI
 {
@@ -9,12 +9,12 @@ namespace Infrastructure.MonoBehaviour.UI
     {
         [SerializeField] private Button _nextLevelButton;
         [SerializeField] private Button _replayButton;
+
+        private GameplaySystem _gameplaySystem;
+
+        public event Action OnReplayClicked;
+        public event Action OnNextLevelClicked;
         
-        [Inject]
-        public void Construct()
-        {
-            throw new NotImplementedException();
-        }
 
         private void Awake()
         {
@@ -24,12 +24,12 @@ namespace Infrastructure.MonoBehaviour.UI
 
         private void NextLevel()
         {
-            throw new NotImplementedException();
+            OnNextLevelClicked?.Invoke();
         }
 
         private void ReplayLevel()
         {
-            throw new NotImplementedException();
+            OnReplayClicked?.Invoke();
         }
     }
 }
