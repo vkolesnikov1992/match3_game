@@ -1,29 +1,53 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Infrastructure.Factory.GameFactory.Interfaces;
 using Infrastructure.MonoBehaviour.View.Core;
+using Infrastructure.Services.CameraService.Interfaces;
+using Infrastructure.Services.DataProvider.Interfaces;
 using Infrastructure.Services.InputService.Interfaces;
 using Infrastructure.Systems.Core.Components;
 using UnityEngine;
+using Zenject;
 
 namespace Infrastructure.Systems.Core
 {
-    public class Match3System
+    public class Match3System : IInitializable
     {
         private Cell[,] _cellsGrid;
         private readonly IGameFactory _factory;
         private readonly IInputService _inputService;
+        private readonly IDataProvider _dataProvider;
+        private readonly ICameraService _cameraService;
 
-        public Match3System(IGameFactory factory, IInputService inputService)
+        public event Action<int> DestroyedCubeCount;
+        private int _destroyedCubeCount;
+
+        public Match3System(IGameFactory factory, IInputService inputService, IDataProvider dataProvider, ICameraService cameraService)
         {
             _factory = factory;
             _inputService = inputService;
+            _dataProvider = dataProvider;
+            _cameraService = cameraService;
+        }
+        
+        public void Initialize()
+        {
+            _inputService.OnSwipeDetected += (startPosition, moveDirection) =>
+            {
+                UniTask.RunOnThreadPool(async () => { await SwapCells(startPosition, moveDirection); });
+            };
         }
 
-        private void CreateLevel(int[,] level)
+        public void CreateLevel(int[,] level)
         {
+            _destroyedCubeCount = 0;
+            
             int numRows = level.GetLength(0);
             int numColumns = level.GetLength(1);
+
+            int dropSpeed = _dataProvider.ConfigsDataContainer.GameSettings.DropSpeed;
+            int swapSpeed = _dataProvider.ConfigsDataContainer.GameSettings.SwapSpeed;
 
             _cellsGrid = new Cell[numColumns, numRows];
 
@@ -40,13 +64,13 @@ namespace Infrastructure.Systems.Core
                         cubeView = _factory.CreateCube(column, reversedRow, cubeType);
                     }
 
-                    Cube cube = new Cube(cubeType, cubeView);
+                    Cube cube = new Cube(cubeType, cubeView, dropSpeed, swapSpeed);
                     Cell cell = new Cell(column, reversedRow, cube);
                     _cellsGrid[column, reversedRow] = cell;
                 }
             }
 
-            //PrintCellsGrid();
+            _cameraService.CenterCameraOnGrid(_cellsGrid);
         }
 
         private async UniTask SwapCells(Vector2Int startPosition, Vector2Int moveDirection)
@@ -71,7 +95,8 @@ namespace Infrastructure.Systems.Core
             UniTask secondTask = secondCell.Cube.ReplaceCell(firstCell);
 
             await UniTask.WhenAll(firstTask, secondTask);
-
+            
+            await DropBlocks();
             await GridNormalize();
         }
 
@@ -272,14 +297,15 @@ namespace Infrastructure.Systems.Core
                         animationTasks.Add(cell.Cube.CubeView.PlayDestroyAnimation());
                         cell.Cube.CubeType = 0;
                         cell.Cube.IsMatched = false;
+
+                        _destroyedCubeCount++;
                     }
                 }
             }
 
             await UniTask.WhenAll(animationTasks);
 
-            Debug.Log("completed");
-            //PrintCellsGrid();
+            DestroyedCubeCount?.Invoke(_destroyedCubeCount);
         }
 
         private async UniTask DropBlocks()
@@ -320,7 +346,6 @@ namespace Infrastructure.Systems.Core
             }
 
             await UniTask.WhenAll(animationTasks);
-            //PrintCellsGrid();
         }
 
         private int GetLowestEmptyCellIndexNew(int x, int startY)
