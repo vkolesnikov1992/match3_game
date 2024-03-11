@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Text;
+using Infrastructure.Systems.Core.Components;
 using Newtonsoft.Json;
 
 namespace Infrastructure.Data.ConfigsData.Configs
@@ -7,16 +9,16 @@ namespace Infrastructure.Data.ConfigsData.Configs
     public struct LevelSetting
     {
         [JsonProperty("Levels")] 
-        private string _level;
+        public string Level;
 
         public int[,] GetLevelsArray()
         {
-            if (string.IsNullOrEmpty(_level))
+            if (string.IsNullOrEmpty(Level))
             {
-                throw new ArgumentNullException(nameof(_level));
+                throw new ArgumentNullException(nameof(Level));
             }
 
-            string[] levelStrings = _level.Split(new[] { "],[" }, StringSplitOptions.None);
+            string[] levelStrings = Level.Split(new[] { "],[" }, StringSplitOptions.None);
 
             int rowCount = levelStrings.Length;
             int columnCount = levelStrings[0].Split(',').Length;
@@ -34,6 +36,37 @@ namespace Infrastructure.Data.ConfigsData.Configs
             }
 
             return levelsArray;
+        }
+        
+        public void SaveConvertCellArrayToString(Cell[,] cellArray)
+        {
+            int numRows = cellArray.GetLength(0);
+            int numColumns = cellArray.GetLength(1);
+
+            StringBuilder sb = new StringBuilder();
+
+            for (int y = numColumns - 1; y >= 0; y--)
+            {
+                sb.Append("[");
+                for (int x = 0; x < numRows; x++)
+                {
+                    Cell cell = cellArray[x, y];
+                    sb.Append(cell.Cube.CubeType);
+
+                    if (x < numRows - 1)
+                    {
+                        sb.Append(",");
+                    }
+                }
+                sb.Append("]");
+
+                if (y > 0)
+                {
+                    sb.Append(",");
+                }
+            }
+
+            Level = sb.ToString();
         }
     }
 }
