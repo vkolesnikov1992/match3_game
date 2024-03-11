@@ -14,11 +14,16 @@ namespace Infrastructure.Systems.Core.Components
 
         public bool IsMatched;
 
+        private readonly int _dropSpeed;
+        private readonly int _swapSpeed;
 
-        public Cube(int cubeType, CubeView cubeView)
+
+        public Cube(int cubeType, CubeView cubeView, int dropSpeed, int swapSpeed)
         {
             CubeType = cubeType;
             CubeView = cubeView;
+            _dropSpeed = dropSpeed;
+            _swapSpeed = swapSpeed;
         }
 
         public async UniTask ReplaceCell(Cell cell)
@@ -26,17 +31,17 @@ namespace Infrastructure.Systems.Core.Components
             if (CubeView != null)
             {
                 Vector2 position = new Vector2(cell.X, cell.Y);
-                CubeView.transform.DOMove(position, 0.5f);
+                CubeView.transform.DOMove(position, _swapSpeed / 1000f);
             }
 
-            await UniTask.Delay(500); 
+            await UniTask.Delay(_swapSpeed); 
             cell.Cube = this;
         }
         
         public async UniTask Drop(Vector2 position, int delay)
         {
-            CubeView.transform.DOMove(position, 0.5f * delay);
-            await UniTask.Delay(500 * delay);
+            CubeView.transform.DOMove(position, _dropSpeed / 1000f * delay);
+            await UniTask.Delay(_dropSpeed * delay);
         }
     }
 }
