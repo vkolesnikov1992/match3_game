@@ -1,8 +1,11 @@
 ﻿using Infrastructure.Factory.GameFactory;
+using Infrastructure.MonoBehaviour.MonoProvider;
 using Infrastructure.Services.DataProvider;
 using Infrastructure.Services.DisposableService;
 using Infrastructure.Services.Json;
+using Infrastructure.Services.MonoProvider.Interfaces;
 using Infrastructure.Services.SaveLoadService;
+using UnityEngine;
 using Zenject;
 
 namespace Infrastructure.MonoInstallers.ProjectContexts
@@ -23,6 +26,16 @@ namespace Infrastructure.MonoInstallers.ProjectContexts
             Container.BindInterfacesAndSelfTo<DataProvider>().AsSingle();
             
             Container.BindInterfacesTo<DisposableService>().AsSingle();
+
+            RegisterMonoProvider();
+        }
+
+        private void RegisterMonoProvider()
+        {
+            GameObject monoProvider = new GameObject("MonoProvider");
+            Container.Bind<IMonoProvider>().FromInstance(monoProvider.AddComponent<MonoProvider>()).AsSingle();
+            
+            DontDestroyOnLoad(monoProvider);
         }
     }
 }
