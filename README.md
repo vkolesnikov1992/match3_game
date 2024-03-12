@@ -20,7 +20,7 @@
 - UniTask
 
 ### Настройки игры
-Настройки игры хранятся в Google Sheets табличке. Для её парсинга необходимо использовать вкладку **Tools => Parse config data** в главном меню Unity.
+Настройки игры хранятся в Google Sheets табличке [таблица](https://docs.google.com/spreadsheets/d/1B1AhAkfZluJcorIZh1skIPyfZ7cg30Axm7J9KE39lWg/edit#gid=0). Для её парсинга необходимо использовать вкладку **Tools => Parse config data** в главном меню Unity.
 
 <img src="Documentation/Images/Parse_image.png"/>
 
@@ -38,3 +38,9 @@
 3. Название атласа должно соответствовать следующему формату: `{index_cube}_destroy` и `{index_cube}_idle`. Например, `1_destroy` и `1_idle` - это блок для водного элемента.
 
 <img src="Documentation/Images/Atlases_image.png"/>
+
+
+match3_game/match3_BurstDebugInformation_DoNotShip/tempburstlibs/armeabi-v7a/
+match3_game/.idea/.idea.match3_game/.idea/
+
+надо эту залупу игнорировать, добавь в gitIgnore
