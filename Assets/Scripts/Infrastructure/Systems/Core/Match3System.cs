@@ -84,6 +84,27 @@ namespace Infrastructure.Systems.Core
 
             _cameraService.CenterCameraOnGrid(_cellsGrid);
         }
+        
+        public void ClearLevel()
+        {
+            _cancellationToken.Cancel();
+            
+            int numRows = _cellsGrid.GetLength(0);
+            int numColumns = _cellsGrid.GetLength(1);
+
+            for (int y = 0; y < numColumns; y++)
+            {
+                for (int x = 0; x < numRows; x++)
+                {
+                    Cell cell = _cellsGrid[x, y];
+
+                    if (cell.Cube.IsHasView)
+                    {
+                        cell.Cube.CubeView.Destroy();
+                    }
+                }
+            }
+        }
 
         private async UniTask SwapCells(Vector2Int startPosition, Vector2Int moveDirection)
         {
@@ -128,7 +149,8 @@ namespace Infrastructure.Systems.Core
             Vector2Int finishPosition = startPosition + moveDirection;
 
             return IsValidCellPosition(startPosition) && _cellsGrid[startPosition.x, startPosition.y].Cube.IsHasView &&
-                   IsValidCellPosition(finishPosition);
+                   IsValidCellPosition(finishPosition) && !_cellsGrid[startPosition.x, startPosition.y].IsCellLocked &&
+                   !_cellsGrid[finishPosition.x, finishPosition.y].IsCellLocked;
         }
 
         private bool IsUpMoveValid(Cell secondCell, Vector2Int moveDirection)
@@ -147,6 +169,7 @@ namespace Infrastructure.Systems.Core
                 await GridNormalize();
             }
             
+            UnlockAllCells();
             SaveProgress();
         }
 
@@ -207,6 +230,8 @@ namespace Infrastructure.Systems.Core
                 {
                     cell.Cube.IsMatched = leftNeighbor.Cube.IsMatched = rightNeighbor.Cube.IsMatched = true;
 
+                    cell.IsCellLocked = leftNeighbor.IsCellLocked = rightNeighbor.IsCellLocked;
+                    
                     CheckVerticalNeighbors(rightNeighbor);
                     CheckVerticalNeighbors(leftNeighbor);
                     CheckVerticalNeighbors(cell);
@@ -222,19 +247,22 @@ namespace Infrastructure.Systems.Core
         {
             if (cell.Y + 1 < _cellsGrid.GetLength(1))
             {
-                Cube topNeighbor = _cellsGrid[cell.X, cell.Y + 1]?.Cube;
-                if (topNeighbor != null && topNeighbor.CubeType == cell.Cube.CubeType)
+                Cell topNeighbor = _cellsGrid[cell.X, cell.Y + 1];
+                
+                if (topNeighbor.Cube != null && topNeighbor.Cube.CubeType == cell.Cube.CubeType)
                 {
-                    topNeighbor.IsMatched = true;
+                    topNeighbor.Cube.IsMatched = true;
+                    topNeighbor.IsCellLocked = true;
                 }
             }
 
             if (cell.Y - 1 >= 0)
             {
-                Cube bottomNeighbor = _cellsGrid[cell.X, cell.Y - 1]?.Cube;
-                if (bottomNeighbor != null && bottomNeighbor.CubeType == cell.Cube.CubeType)
+                Cell bottomNeighbor = _cellsGrid[cell.X, cell.Y - 1];
+                if (bottomNeighbor.Cube != null && bottomNeighbor.Cube.CubeType == cell.Cube.CubeType)
                 {
-                    bottomNeighbor.IsMatched = true;
+                    bottomNeighbor.Cube.IsMatched = true;
+                    bottomNeighbor.IsCellLocked = true;
                 }
             }
         }
@@ -257,7 +285,8 @@ namespace Infrastructure.Systems.Core
                 bottomNeighbor.Cube.IsHasView && cell.Cube.CubeType == bottomNeighbor.Cube.CubeType)
             {
                 cell.Cube.IsMatched = topNeighbor.Cube.IsMatched = bottomNeighbor.Cube.IsMatched = true;
-
+                cell.IsCellLocked = topNeighbor.IsCellLocked = bottomNeighbor.IsCellLocked;
+                
                 CheckHorizontalNeighbors(topNeighbor);
                 CheckHorizontalNeighbors(bottomNeighbor);
                 CheckHorizontalNeighbors(cell);
@@ -272,19 +301,21 @@ namespace Infrastructure.Systems.Core
         {
             if (cell.X + 1 < _cellsGrid.GetLength(0))
             {
-                Cube rightNeighbor = _cellsGrid[cell.X + 1, cell.Y]?.Cube;
-                if (rightNeighbor != null && rightNeighbor.CubeType == cell.Cube.CubeType)
+                Cell rightNeighbor = _cellsGrid[cell.X + 1, cell.Y];
+                if (rightNeighbor.Cube != null && rightNeighbor.Cube.CubeType == cell.Cube.CubeType)
                 {
-                    rightNeighbor.IsMatched = true;
+                    rightNeighbor.Cube.IsMatched = true;
+                    rightNeighbor.IsCellLocked = true;
                 }
             }
 
             if (cell.X - 1 >= 0)
             {
-                Cube leftNeighbor = _cellsGrid[cell.X - 1, cell.Y]?.Cube;
-                if (leftNeighbor != null && leftNeighbor.CubeType == cell.Cube.CubeType)
+                Cell leftNeighbor = _cellsGrid[cell.X - 1, cell.Y];
+                if (leftNeighbor.Cube != null && leftNeighbor.Cube.CubeType == cell.Cube.CubeType)
                 {
-                    leftNeighbor.IsMatched = true;
+                    leftNeighbor.Cube.IsMatched = true;
+                    leftNeighbor.IsCellLocked = true;
                 }
             }
         }
@@ -353,6 +384,8 @@ namespace Infrastructure.Systems.Core
                             _cellsGrid[x, y].Cube.CubeView = null;
                             _cellsGrid[x, y].Cube.CubeType = 0;
 
+                            _cellsGrid[x, y].IsCellLocked = true;
+
                             animationTasks.Add(_cellsGrid[x, emptyCellIndex].Cube.Drop(newPosition, cellsCount));
                         }
                     }
@@ -390,11 +423,8 @@ namespace Infrastructure.Systems.Core
             return lowestEmptyCellIndex;
         }
 
-
-        public void ClearLevel()
+        private void UnlockAllCells()
         {
-            _cancellationToken.Cancel();
-            
             int numRows = _cellsGrid.GetLength(0);
             int numColumns = _cellsGrid.GetLength(1);
 
@@ -404,10 +434,7 @@ namespace Infrastructure.Systems.Core
                 {
                     Cell cell = _cellsGrid[x, y];
 
-                    if (cell.Cube.IsHasView)
-                    {
-                        cell.Cube.CubeView.Destroy();
-                    }
+                    cell.IsCellLocked = false;
                 }
             }
         }
