@@ -20,7 +20,7 @@
 - UniTask
 
 ### Настройки игры
-Настройки игры хранятся в Google Sheets табличке [таблица](https://docs.google.com/spreadsheets/d/1B1AhAkfZluJcorIZh1skIPyfZ7cg30Axm7J9KE39lWg/edit#gid=0). Для её парсинга необходимо использовать вкладку **Tools => Parse config data** в главном меню Unity.
+Настройки игры хранятся в Google Sheets [табличке](https://docs.google.com/spreadsheets/d/1B1AhAkfZluJcorIZh1skIPyfZ7cg30Axm7J9KE39lWg/edit#gid=0). Для её парсинга необходимо использовать вкладку **Tools => Parse config data** в главном меню Unity.
 
 <img src="Documentation/Images/Parse_image.png"/>
 
