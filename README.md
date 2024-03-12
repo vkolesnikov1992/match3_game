@@ -1,5 +1,5 @@
 ## Описание игры
-[Описание](https://docs.google.com/document/d/1r_etmd5GP6zvcBz2rrBD00BJja40N7MOOfiTt5Uya3U/edit)
+[Описание](https://docs.google.com/document/d/1r_etmd5GP6zvcBz2rrBD00BJja40N7MOOfiTt5Uya3U/edit)  
 [apk link](https://drive.google.com/file/d/17yQgU1LZP8lzdBgEYZGCSSEyxRLWWzht/view?usp=sharing)
 
 ### Механика игры
