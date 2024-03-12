@@ -1,4 +1,5 @@
 ﻿using Infrastructure.StateMachines.GameStateMachine.States.Interfaces;
+using UnityEngine;
 
 namespace Infrastructure.StateMachines.GameStateMachine.States
 {
@@ -17,7 +18,14 @@ namespace Infrastructure.StateMachines.GameStateMachine.States
 
         public void Enter()
         {
+            SetMaxFrameRate();
+            
             _gameStateMachine.Enter<LoadProgressState>();
+        }
+
+        private void SetMaxFrameRate()
+        {
+            Application.targetFrameRate = 60;
         }
     }
 }
