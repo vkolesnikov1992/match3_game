@@ -116,16 +116,20 @@ namespace Infrastructure.Systems.Core
             Cell firstCell = _cellsGrid[startPosition.x, startPosition.y];
             Cell secondCell = _cellsGrid[startPosition.x + moveDirection.x, startPosition.y + moveDirection.y];
 
-
             if (!IsUpMoveValid(secondCell, moveDirection))
             {
                 return;
             }
+            
+            FindMatches();
 
             await UniTask.SwitchToMainThread();
 
             UniTask firstTask = firstCell.Cube.ReplaceCell(secondCell);
             UniTask secondTask = secondCell.Cube.ReplaceCell(firstCell);
+            
+            firstCell.IsCellLocked = true;
+            secondCell.IsCellLocked = true;
 
             await UniTask.WhenAll(firstTask, secondTask).AttachExternalCancellation(_cancellationToken.Token);
             
@@ -168,7 +172,7 @@ namespace Infrastructure.Systems.Core
             {
                 await GridNormalize();
             }
-            
+
             UnlockAllCells();
             SaveProgress();
         }
@@ -206,7 +210,7 @@ namespace Infrastructure.Systems.Core
                     }
                 }
             }
-
+            
             return isHorizontalMatched || isVerticalMatched;
         }
 
@@ -383,15 +387,15 @@ namespace Infrastructure.Systems.Core
 
                             _cellsGrid[x, y].Cube.CubeView = null;
                             _cellsGrid[x, y].Cube.CubeType = 0;
-
-                            _cellsGrid[x, y].IsCellLocked = true;
-
+                            
+                            LockCellsBetween(new Vector2Int(x, y), new Vector2Int(x, emptyCellIndex));
+                            
                             animationTasks.Add(_cellsGrid[x, emptyCellIndex].Cube.Drop(newPosition, cellsCount));
                         }
                     }
                 }
             }
-
+            
             await UniTask.WhenAll(animationTasks).AttachExternalCancellation(_cancellationToken.Token);
         }
 
@@ -421,6 +425,22 @@ namespace Infrastructure.Systems.Core
             }
 
             return lowestEmptyCellIndex;
+        }
+        
+        private void LockCellsBetween(Vector2Int startPosition, Vector2Int endPosition)
+        {
+            int minX = Mathf.Min(startPosition.x, endPosition.x);
+            int maxX = Mathf.Max(startPosition.x, endPosition.x);
+            int minY = Mathf.Min(startPosition.y, endPosition.y);
+            int maxY = Mathf.Max(startPosition.y, endPosition.y);
+
+            for (int x = minX; x <= maxX; x++)
+            {
+                for (int y = minY; y <= maxY; y++)
+                {
+                    _cellsGrid[x, y].IsCellLocked = true;
+                }
+            }
         }
 
         private void UnlockAllCells()
@@ -457,7 +477,7 @@ namespace Infrastructure.Systems.Core
                 {
                     Cell cell = _cellsGrid[x, y];
                     int cubeType = cell.Cube.CubeType;
-                    line += cubeType + " ";
+                    line += cubeType + " " ;
                 }
 
                 Debug.Log(line); 
