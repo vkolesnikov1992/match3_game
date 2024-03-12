@@ -1,36 +1,50 @@
-﻿using Infrastructure.MonoBehaviour.UI;
+﻿using System;
+using Infrastructure.MonoBehaviour.UI;
 using Infrastructure.Services.DataProvider.Interfaces;
+using Infrastructure.Services.DisposableService.Interfaces;
 using Infrastructure.Services.SaveLoadService.Interfaces;
 using Zenject;
 
 namespace Infrastructure.Systems.Core
 {
-    public class GameplaySystem : IInitializable
+    public class GameplaySystem : IInitializable, IDisposable
     {
         private readonly Match3System _match3System;
+        private readonly BallSystem _ballSystem;
         private readonly IDataProvider _dataProvider;
         private readonly ISaveLoadService _saveLoadService;
         private readonly GameLoopCanvas _gameLoopCanvas;
+        private readonly IDisposableService _disposableService;
 
         private int _cubeCountTarget;
 
-        public GameplaySystem(Match3System match3System, IDataProvider dataProvider, 
-            ISaveLoadService saveLoadService, GameLoopCanvas gameLoopCanvas)
+        public GameplaySystem(Match3System match3System, BallSystem ballSystem, IDataProvider dataProvider, 
+            ISaveLoadService saveLoadService, GameLoopCanvas gameLoopCanvas, IDisposableService disposableService)
         {
             _match3System = match3System;
+            _ballSystem = ballSystem;
             _dataProvider = dataProvider;
             _saveLoadService = saveLoadService;
             _gameLoopCanvas = gameLoopCanvas;
+            _disposableService = disposableService;
         }
 
         public void Initialize()
         {
+            _disposableService.Track(this);
+            
             CreateLevel(GetCurrentLevel());
             
             _match3System.DestroyedCubeCount += CheckLevel;
-            
             _gameLoopCanvas.OnReplayClicked += LevelReload;
             _gameLoopCanvas.OnNextLevelClicked += NextLevel;
+        }
+        
+        public void Dispose()
+        {
+            _match3System.DestroyedCubeCount -= CheckLevel;
+            _gameLoopCanvas.OnReplayClicked -= LevelReload;
+            _gameLoopCanvas.OnNextLevelClicked -= NextLevel;
         }
 
         private void CreateLevel(int[,] level)
@@ -98,12 +112,14 @@ namespace Infrastructure.Systems.Core
         {
             _match3System.ClearLevel();
             CreateLevel(GetCurrentLevel());
+            _ballSystem.RestartBallMovement();
         }
 
         private void NextLevel()
         {
             _match3System.ClearLevel();
             CreateLevel(GetNextLevel());
+            _ballSystem.RestartBallMovement();
         }
     }
 }
