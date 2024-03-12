@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -9,16 +11,21 @@ namespace Infrastructure.MonoBehaviour.View.Core
     {
         [SerializeField] private SpriteRenderer _spriteRenderer;
         private Sprite[] _sprites;
-        
+        private Tween _moveTween;
         public event Action<BallView> OnMovementComplete;
+        private CancellationTokenSource _cancellationToken;
 
-        public void SetSprites(Sprite[] sprite)
+        public void Initialize(Sprite[] sprite)
         {
             _sprites = sprite;
+
+            _cancellationToken = new CancellationTokenSource();
         }
         
-        public void Move(Vector3 startPoint, Vector3 endPoint, float size, float duration, float amplitude)
+        public async UniTaskVoid Move(Vector3 startPoint, Vector3 endPoint, float size, float duration, float amplitude, int delay)
         {
+            await UniTask.Delay(delay, cancellationToken: _cancellationToken.Token);
+            
             Vector3 scale = new Vector3(size, size, size);
             transform.localScale = scale;
             
@@ -26,7 +33,7 @@ namespace Infrastructure.MonoBehaviour.View.Core
             
             transform.position = startPoint;
 
-            transform.DOMove(endPoint, duration)
+            _moveTween = transform.DOMove(endPoint, duration)
                 .SetEase(Ease.Linear)
                 .OnUpdate(() =>
                 {
@@ -36,12 +43,18 @@ namespace Infrastructure.MonoBehaviour.View.Core
                 })
                 .OnComplete(() =>
                 {
-                    float delay = Random.Range(1f, 10f);
-                    DOVirtual.DelayedCall(delay, () =>
-                    {
-                        OnMovementComplete?.Invoke(this);
-                    });
+                    OnMovementComplete?.Invoke(this);
                 });
+        }
+
+        public void KillMovement()
+        {
+            _moveTween?.Kill();
+            _cancellationToken.Cancel();
+
+            _spriteRenderer.sprite = null;
+            
+            _cancellationToken = new CancellationTokenSource();
         }
     }
 }

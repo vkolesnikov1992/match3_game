@@ -26,8 +26,8 @@ namespace Infrastructure.Services.CameraService
 
             Vector3[] randomPoints = new Vector3[2];
 
-            float leftOffset = cameraWidth * 0.1f;
-            float rightOffset = cameraWidth * 0.1f;
+            float leftOffset = cameraWidth * 0.3f;
+            float rightOffset = cameraWidth * 0.3f;
 
             float leftX = _mainCamera.transform.position.x - (cameraWidth / 2 + leftOffset);
             float rightX = _mainCamera.transform.position.x + (cameraWidth / 2 + rightOffset);

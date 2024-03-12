@@ -75,7 +75,7 @@ namespace Infrastructure.Factory.GameFactory
             }
             
             BallView ballView = Object.Instantiate(_ballViewPrefab, position, Quaternion.identity, _ballViewHolder);
-            ballView.SetSprites(_ballsSprites);
+            ballView.Initialize(_ballsSprites);
             
             return ballView;
         }

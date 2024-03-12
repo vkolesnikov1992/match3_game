@@ -25,7 +25,7 @@ namespace Infrastructure.MonoInstallers.SceneContexts
         {
             Container.BindInterfacesTo<GameplaySystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<Match3System>().AsSingle();
-            Container.BindInterfacesTo<BallSystem>().AsSingle();
+            Container.BindInterfacesAndSelfTo<BallSystem>().AsSingle();
         }
     }
 }
