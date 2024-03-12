@@ -13,7 +13,7 @@
 ### Версия Unity
 Версия Unity: 2021.3.21f1
 
-### Внешние фреймворки
+### Фреймворки
 Для разработки игры использовались следующие внешние фреймворки:
 - Dotween
 - Zenject
@@ -39,8 +39,3 @@
 
 <img src="Documentation/Images/Atlases_image.png"/>
 
-
-match3_game/match3_BurstDebugInformation_DoNotShip/tempburstlibs/armeabi-v7a/
-match3_game/.idea/.idea.match3_game/.idea/
-
-надо эту залупу игнорировать, добавь в gitIgnore
