@@ -1,5 +1,6 @@
 ﻿using Infrastructure.Factory.GameFactory;
 using Infrastructure.Services.DataProvider;
+using Infrastructure.Services.DisposableService;
 using Infrastructure.Services.Json;
 using Infrastructure.Services.SaveLoadService;
 using Zenject;
@@ -20,6 +21,8 @@ namespace Infrastructure.MonoInstallers.ProjectContexts
             Container.BindInterfacesTo<PlayerPrefsService>().AsSingle();
                 
             Container.BindInterfacesAndSelfTo<DataProvider>().AsSingle();
+            
+            Container.BindInterfacesTo<DisposableService>().AsSingle();
         }
     }
 }
