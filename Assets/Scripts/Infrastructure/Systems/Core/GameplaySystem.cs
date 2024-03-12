@@ -91,7 +91,7 @@ namespace Infrastructure.Systems.Core
             }
 
             int levelIndex = _dataProvider.PlayerDataContainer.PlayerProgress.LevelIndex;
-            return _dataProvider.ConfigsDataContainer.LevelSettings[levelIndex].GetLevelsArray();
+            return GetLevelByIndex(levelIndex);
         }
 
         private int[,] GetNextLevel()
@@ -107,11 +107,19 @@ namespace Infrastructure.Systems.Core
 
             return level;
         }
+        
+        private int[,] GetLevelByIndex(int levelIndex)
+        {
+            return _dataProvider.ConfigsDataContainer.LevelSettings[levelIndex].GetLevelsArray();
+        }
 
         private void LevelReload()
         {
             _match3System.ClearLevel();
-            CreateLevel(GetCurrentLevel());
+            
+            int levelIndex = _dataProvider.PlayerDataContainer.PlayerProgress.LevelIndex;
+            CreateLevel(GetLevelByIndex(levelIndex));
+            
             _ballSystem.RestartBallMovement();
         }
 

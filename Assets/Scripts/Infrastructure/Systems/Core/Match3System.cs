@@ -7,6 +7,7 @@ using Infrastructure.MonoBehaviour.View.Core;
 using Infrastructure.Services.CameraService.Interfaces;
 using Infrastructure.Services.DataProvider.Interfaces;
 using Infrastructure.Services.InputService.Interfaces;
+using Infrastructure.Services.SaveLoadService.Interfaces;
 using Infrastructure.Systems.Core.Components;
 using UnityEngine;
 using Zenject;
@@ -20,17 +21,20 @@ namespace Infrastructure.Systems.Core
         private readonly IInputService _inputService;
         private readonly IDataProvider _dataProvider;
         private readonly ICameraService _cameraService;
+        private readonly ISaveLoadService _saveLoadService;
 
         private CancellationTokenSource _cancellationToken;
         public event Action<int> DestroyedCubeCount;
         private int _destroyedCubeCount;
 
-        public Match3System(IGameFactory factory, IInputService inputService, IDataProvider dataProvider, ICameraService cameraService)
+        public Match3System(IGameFactory factory, IInputService inputService, IDataProvider dataProvider,
+            ICameraService cameraService, ISaveLoadService saveLoadService)
         {
             _factory = factory;
             _inputService = inputService;
             _dataProvider = dataProvider;
             _cameraService = cameraService;
+            _saveLoadService = saveLoadService;
         }
         
         public void Initialize()
@@ -142,6 +146,8 @@ namespace Infrastructure.Systems.Core
             {
                 await GridNormalize();
             }
+            
+            SaveProgress();
         }
 
         private bool FindMatches()
@@ -404,6 +410,12 @@ namespace Infrastructure.Systems.Core
                     }
                 }
             }
+        }
+
+        private void SaveProgress()
+        {
+            _dataProvider.PlayerDataContainer.PlayerProgress.CurrentLevel.SaveConvertCellArrayToString(_cellsGrid);
+            _saveLoadService.SaveProgress();
         }
 
         private void PrintCellsGrid()
