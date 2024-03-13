@@ -62,6 +62,8 @@ namespace Infrastructure.Systems.Core
                 CreateLevel(level);
                 
                 _saveLoadService.SaveProgress();
+                
+                _ballSystem.RestartBallMovement();
             }
         }
 
